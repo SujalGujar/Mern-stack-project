@@ -1,13 +1,14 @@
 import { useState } from "react";
 import axiosIntance from "../../api/axiosIntance";
 import { Mail, Lock } from "lucide-react";
-
-const Login = () => {
+import { set } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+const Login = ({setIsLoggedIn}) => {
   const [formData, setformData] = useState({
     emailId: "",
     password: "",
   });
-
+const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -24,6 +25,8 @@ const Login = () => {
       );
 
       console.log(res.data);
+      setIsLoggedIn(true);
+      Navigate('/courses')
       alert("Login Successful");
     } catch (error) {
       setError(
@@ -155,6 +158,15 @@ const Login = () => {
           >
             {loading ? "Logging In..." : "Login"}
           </button>
+          <p className="text-center mt-4">
+          Already have no an account?{" "}
+          <Link
+            to="/register"
+            className="text-blue-600 font-semibold"
+          >
+            Register
+          </Link>
+        </p>
         </form>
       </div>
     </div>
