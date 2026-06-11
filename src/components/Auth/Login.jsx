@@ -3,6 +3,8 @@ import axiosIntance from "../../api/axiosIntance";
 import { Mail, Lock } from "lucide-react";
 import { set } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
+import { roleRoutes } from "../../routes/RoleRoutes";
 const Login = ({setIsLoggedIn}) => {
   const [formData, setformData] = useState({
     emailId: "",
@@ -11,7 +13,7 @@ const Login = ({setIsLoggedIn}) => {
 const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const {login} = useAuth();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -23,6 +25,13 @@ const navigate = useNavigate()
         "/auth/login",
         formData
       );
+      console.log(res.data.token)
+      console.log(res.data.user)
+      const token = res.data.token
+      const user = res.data.user
+
+      login(token,user)
+      navigate(roleRoutes[user.role])
 
       console.log(res.data);
       setIsLoggedIn(true);
